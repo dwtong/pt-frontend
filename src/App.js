@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const borderStyle = {"border": "2px solid lightgray", "padding": "0.5rem", "margin": "1rem 5rem"};
+
 const CUSTOMERS = ['Metservice', 'Flick', 'Strategy'];
 const NOTEBOOKS = [
   {
@@ -58,9 +60,16 @@ class OrderForm extends Component {
   render () {
     return (
       <div>
-        <OrderDetailsFields customers={CUSTOMERS} />
-        <OrderItemsFields notebooks={NOTEBOOKS} />
-        <PaperAllocationFields paperSources={PAPER_SOURCES}/>
+        <div style={borderStyle}>
+          <OrderDetailsFields customers={CUSTOMERS} />
+        </div>
+        <div style={borderStyle}>
+          <OrderItemsFields notebooks={NOTEBOOKS} />
+        </div>
+        <div style={borderStyle}>
+          <PaperSourceFields paperSources={PAPER_SOURCES}/>
+          <button>Confirm Order!</button>
+        </div>
       </div>
     );
   }
@@ -97,20 +106,31 @@ const OrderItemsFields = ({ notebooks }) => {
   );
 };
 
-const PaperAllocationFields = ({ paperSources }) => {
+const PaperSourceFields = ({ paperSources }) => {
   return (
     <div>
       <h3>Paper Allocation</h3>
-      <div>
-        <h5>A5 Blank On One Side</h5>
-        <OptionsQuantityField
-          label="Paper Source"
-          options={paperSources.map(source => {
-            return {name: source.supplierName, id: source.supplierID};
-          })}/>
-        <button type="button">Add Source</button>
-        <PaperAllocatedResults required={10} allocated={5} />
+      <div style={borderStyle}>
+        <AllocatedQuantityFields paperType={{name: 'A4 Blank on one side'}} paperSources={paperSources}/>
       </div>
+      <div style={borderStyle}>
+        <AllocatedQuantityFields paperType={{name: 'A4 Semi-blank'}} paperSources={paperSources}/>
+      </div>
+    </div>
+  );
+};
+
+const AllocatedQuantityFields = ({ paperType, paperSources }) => {
+  return (
+    <div>
+      <h5>{paperType.name}</h5>
+      <OptionsQuantityField
+        label="Paper Source"
+        options={paperSources.map(source => {
+          return {name: source.supplierName, id: source.supplierID};
+        })}/>
+      <button type="button">Add Source</button>
+      <PaperAllocatedResults required={10} allocated={5} />
     </div>
   );
 };
