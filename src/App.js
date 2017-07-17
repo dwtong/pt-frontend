@@ -57,17 +57,43 @@ class App extends Component {
 }
 
 class OrderForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      customers: CUSTOMERS,
+      notebookTypes: NOTEBOOKS,
+      paperSources: PAPER_SOURCES,
+    }
+
+    this.calcuatePaperRequired = this.calculatePaperRequired.bind(this);
+  }
+
+  componentDidMount() {
+    // get customers, notebooks, sources
+    // update state
+  }
+
+  calculatePaperRequired() {
+    return ([
+      {name: 'A4 Blank on one side', allocated: 25, required: 30},
+      {name: 'A4 Semi-blank', allocated: 5, required: 20},
+    ]);
+  }
+
   render () {
     return (
       <div>
         <div style={borderStyle}>
-          <OrderDetailsFields customers={CUSTOMERS} />
+          <OrderDetailsFields customers={this.state.customers} />
         </div>
         <div style={borderStyle}>
-          <OrderItemsFields notebooks={NOTEBOOKS} />
+          <OrderItemsFields notebooks={this.state.notebookTypes} />
         </div>
         <div style={borderStyle}>
-          <PaperSourceFields paperSources={PAPER_SOURCES}/>
+          <PaperAllocationFields
+            paperRequired={this.calculatePaperRequired()}
+            paperSources={this.state.paperSources} />
           <button>Confirm Order!</button>
         </div>
       </div>
@@ -106,16 +132,15 @@ const OrderItemsFields = ({ notebooks }) => {
   );
 };
 
-const PaperSourceFields = ({ paperSources }) => {
+const PaperAllocationFields = ({ paperSources, paperRequired }) => {
   return (
     <div>
       <h3>Paper Allocation</h3>
-      <div style={borderStyle}>
-        <AllocatedQuantityFields paperType={{name: 'A4 Blank on one side'}} paperSources={paperSources}/>
-      </div>
-      <div style={borderStyle}>
-        <AllocatedQuantityFields paperType={{name: 'A4 Semi-blank'}} paperSources={paperSources}/>
-      </div>
+      {paperRequired.map(paperType =>
+        <div style={borderStyle}>
+          <AllocatedQuantityFields paperType={paperType} paperSources={paperSources}/>
+        </div>
+      )}
     </div>
   );
 };
@@ -130,10 +155,20 @@ const AllocatedQuantityFields = ({ paperType, paperSources }) => {
           return {name: source.supplierName, id: source.supplierID};
         })}/>
       <button type="button">Add Source</button>
-      <PaperAllocatedResults required={10} allocated={5} />
+      <AllocatedQuantityResults required={paperType.required} allocated={paperType.allocated} />
     </div>
   );
 };
+
+const AllocatedQuantityResults = ({ required, allocated }) => {
+  return (
+    <div>
+      <div>Paper Required: {required}</div>
+      <div>Paper Allocated: {allocated}</div>
+      <div><strong>Left to Allocate: {required - allocated}</strong></div>
+    </div>
+  );
+}
 
 const OptionsQuantityField = ({ label, options }) => {
   return (
@@ -147,16 +182,5 @@ const OptionsQuantityField = ({ label, options }) => {
     </div>
   );
 };
-
-const PaperAllocatedResults = ({ required, allocated }) => {
-  return (
-    <div>
-      <div>Paper Required: {required}</div>
-      <div>Paper Allocated: {allocated}</div>
-      <div><strong>Left to Allocate: {required - allocated}</strong></div>
-    </div>
-  );
-}
-
 
 export default App;
