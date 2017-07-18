@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import OptionsQuantitySelect from '../components/OptionsQuantitySelect';
 import OrderItems from '../components/OrderItems'
 import OrderDetails from '../components/OrderDetails'
 import OrderPaperAllocations from '../components/OrderPaperAllocations'
@@ -15,14 +16,21 @@ class OrderForm extends Component {
       order: {
         customer: '',
         dueDate: '2017-07-17',
-        order_items: [],
+        orderItems: [],
       },
       customers: CUSTOMERS,
       notebookTypes: NOTEBOOKS,
       paperSources: PAPER_SOURCES,
     }
 
+    this.addOrderItem = this.addOrderItem.bind(this);
     this.calcuatePaperRequired = this.calculatePaperRequired.bind(this);
+  }
+
+  addOrderItem(item) {
+    const newItem = { bookId: parseInt(item.item), quantity: item.quantity };
+    const updatedItems = [...this.state.order.orderItems, newItem];
+    this.setState({ order: { orderItems: updatedItems } });
   }
 
   calculatePaperRequired() {
@@ -32,15 +40,31 @@ class OrderForm extends Component {
     ]);
   }
 
+  findNotebookName(id) {
+    return this.state.notebookTypes.find(nb => nb.id === id).name;
+  }
+
   render () {
+    const notebooks = this.state.notebookTypes.map(nb => {return { name: nb.name, id: nb.id } });
+    const orderItems = this.state.order.orderItems.map(item =>
+      <p><strong>{this.findNotebookName(item.bookId)}</strong> Quantity: {item.quantity}</p>)
+
     return (
       <div>
         <div style={borderStyle}>
           <OrderDetails customers={this.state.customers} />
         </div>
+
         <div style={borderStyle}>
-          <OrderItems notebooks={this.state.notebookTypes} />
+          <OrderItems>
+            {orderItems}
+            <OptionsQuantitySelect
+              label="Notebook Type"
+              options={notebooks}
+              addItem={this.addOrderItem} />
+          </OrderItems>
         </div>
+
         <div style={borderStyle}>
           <OrderPaperAllocations
             paperRequired={this.calculatePaperRequired()}

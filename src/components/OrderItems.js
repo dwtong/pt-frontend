@@ -1,18 +1,10 @@
-import React, { Component } from 'react';
-import OptionsQuantityField from './OptionsQuantityField';
+import React from 'react';
 
-const OrderItems = ({ notebooks, handleItemSelect, handleItemQuantityChange }) => {
-  const notebookOptions = notebooks.map(notebook => {return { name: notebook.name, id: notebook.id } });
-
+const OrderItems = ({ children }) => {
   return (
     <div>
       <h3>Order Items</h3>
-      <OptionsQuantityField
-        label="Notebook Type"
-        options={notebookOptions}
-        handleOptionSelect={handleItemSelect}
-        handleQuantityChange={handleItemQuantityChange} />
-      <button type="button">Add Item</button>
+      {children}
     </div>
   );
 };
