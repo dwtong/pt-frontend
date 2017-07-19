@@ -7,7 +7,7 @@ import OrderPaper from '../components/OrderPaper';
 import OrderPaperItem from '../components/OrderPaperItem';
 import OrderPaperSummary from '../components/OrderPaperSummary';
 
-import { CUSTOMERS, NOTEBOOKS, PAPER_SOURCES } from '../config/mock-data';
+import { CUSTOMERS, NOTEBOOKS, PAPER_TYPES, PAPER_SOURCES } from '../config/mock-data';
 
 class OrderForm extends Component {
   constructor(props) {
@@ -21,12 +21,13 @@ class OrderForm extends Component {
       },
       customers: CUSTOMERS,
       notebookTypes: NOTEBOOKS,
+      paperTypes: PAPER_TYPES,
       paperSources: PAPER_SOURCES,
     }
 
     this.addOrderItem = this.addOrderItem.bind(this);
     this.addPaperSource = this.addPaperSource.bind(this);
-    this.calcuatePaperRequired = this.calculatePaperRequired.bind(this);
+    this.calculatePaperRequired = this.calculatePaperRequired.bind(this);
   }
 
   addOrderItem(item) {
@@ -42,7 +43,7 @@ class OrderForm extends Component {
       items.push({ bookId: id, quantity: item.quantity });
     }
 
-    this.setState({ order: { orderItems: items } });
+    this.setState({ order: { orderItems: items } }, this.calculatePaperRequired);
   }
 
   addPaperSource(source) {
@@ -50,21 +51,36 @@ class OrderForm extends Component {
   }
 
   calculatePaperRequired() {
-    // return ([
-    //   {paperType: 'A4 Blank on one side', allocated: 25, required: 30},
-    //   {paperType: 'A4 Semi-blank', allocated: 5, required: 20},
-    // ]);
+    const { order, paperTypes } = this.state;
+    const paperRequired = [...paperTypes];
+
+    order.orderItems.forEach((book, bookIndex) => {
+      const pages = this.findBook(book.bookId).paper;
+
+      // find and update paper quantities in paperRequired for each page type
+      pages.forEach((page, pageIndex) => {
+        const index = paperRequired.findIndex(x => x.id === page.paperTypeId)
+        paperRequired[index].quantity = book.quantity * page.quantity;
+
+        if (bookIndex >= order.orderItems.length - 1 && pageIndex >= pages.length - 1) {
+          this.setState({ paperRequired: paperRequired });
+        }
+      });
+    });
   }
 
   findBook(id) {
     return this.state.notebookTypes.find(nb => nb.id === id);
   }
 
+  findPaperType(id) {
+    return this.state.paperTypes.find(nb => nb.id === id);
+  }
+
   render () {
-    const { notebookTypes, order, paperSources } = this.state;
+    const { notebookTypes, order, paperRequired, paperSources } = this.state;
     const notebooks = notebookTypes.map(nb => {return { name: nb.name, id: nb.id } });
-    const paperOptions = paperSources.map(ps => {return {name: ps.supplierName, id: ps.supplierID}});
-    const paperRequired = this.calculatePaperRequired();
+    const paperOptions = paperSources.map(ps => {return {name: ps.name, id: ps.id}});
 
     return (
       <div>
@@ -72,22 +88,22 @@ class OrderForm extends Component {
 
         <OrderItems>
           {order.orderItems && order.orderItems.map(item =>
-            <OrderItem item={this.findBook(item.bookId)} quantity={item.quantity} />)}
+            <OrderItem key={item.bookId} item={this.findBook(item.bookId)} quantity={item.quantity} />)}
 
           <AddNewItem
             label="Notebook Type" options={notebooks} addItem={this.addOrderItem} />
         </OrderItems>
 
         <OrderPaper>
-          {paperRequired && paperRequired.map(paperType =>
+          {paperRequired ? paperRequired.map(paperType =>
             <div>
-              <OrderPaperItem>
+              <OrderPaperItem label={paperType.type}>
                 <AddNewItem
                   label="Paper Source" options={paperOptions} addItem={this.addPaperSource} />
               </OrderPaperItem>
               <OrderPaperSummary required={paperType.required} allocated={paperType.allocated} />
             </div>
-          )}
+          ) : 'Please add items to order.'}
         </OrderPaper>
 
         <button>Confirm Order!</button>
