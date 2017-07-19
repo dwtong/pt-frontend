@@ -18,6 +18,7 @@ class OrderForm extends Component {
         customer: '',
         dueDate: '2017-07-17',
         orderItems: [],
+        paper: []
       },
       customers: CUSTOMERS,
       notebookTypes: NOTEBOOKS,
@@ -42,7 +43,6 @@ class OrderForm extends Component {
       // Add new line item
       items.push({ bookId: id, quantity: item.quantity });
     }
-
     this.setState({ order: { orderItems: items } }, this.calculatePaperRequired);
   }
 
@@ -59,11 +59,11 @@ class OrderForm extends Component {
 
       // find and update paper quantities in paperRequired for each page type
       pages.forEach((page, pageIndex) => {
-        const index = paperRequired.findIndex(x => x.id === page.paperTypeId)
-        paperRequired[index].quantity = book.quantity * page.quantity;
+        const index = paperRequired.findIndex(x => x.id === page.paperTypeId);
+        paperRequired[index].quantityRequired = book.quantity * page.quantity;
 
         if (bookIndex >= order.orderItems.length - 1 && pageIndex >= pages.length - 1) {
-          this.setState({ paperRequired: paperRequired });
+          this.setState({ order: { ...order, paper: paperRequired } });
         }
       });
     });
@@ -78,7 +78,7 @@ class OrderForm extends Component {
   }
 
   render () {
-    const { notebookTypes, order, paperRequired, paperSources } = this.state;
+    const { notebookTypes, order, paperSources } = this.state;
     const notebooks = notebookTypes.map(nb => {return { name: nb.name, id: nb.id } });
     const paperOptions = paperSources.map(ps => {return {name: ps.name, id: ps.id}});
 
@@ -95,13 +95,13 @@ class OrderForm extends Component {
         </OrderItems>
 
         <OrderPaper>
-          {paperRequired ? paperRequired.map(paperType =>
+          {order.paper && order.paper.length > 0 ? order.paper.map(paper =>
             <div>
-              <OrderPaperItem label={paperType.type}>
+              <OrderPaperItem label={paper.type}>
                 <AddNewItem
                   label="Paper Source" options={paperOptions} addItem={this.addPaperSource} />
               </OrderPaperItem>
-              <OrderPaperSummary required={paperType.required} allocated={paperType.allocated} />
+              <OrderPaperSummary required={paper.quantityRequired} allocated={paper.allocated} />
             </div>
           ) : 'Please add items to order.'}
         </OrderPaper>
