@@ -1,12 +1,13 @@
 import React from 'react';
+import { borderStyle } from '../styles';
 
-const OrderDetails = ({ customers }) =>
-  <div>
+const OrderDetails = ({ customers, dueDate }) =>
+  <div style={borderStyle}>
     <h3>Order Details</h3>
     <div>
       <label>Customer </label>
       <select>
-        {customers.map(customer => <option>{customer}</option>)}
+        {customers && customers.map(customer => <option>{customer}</option>)}
       </select>
     </div>
     <div>

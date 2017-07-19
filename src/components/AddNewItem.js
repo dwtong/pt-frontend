@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class OptionsQuantitySelect extends Component {
+class AddNewItem extends Component {
   constructor(props) {
     super(props);
 
@@ -22,6 +22,7 @@ class OptionsQuantitySelect extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.addItem({ item: this.state.selectedOption, quantity: this.state.quantity });
+    this.setState({ selectedOption: 0, quantity: 0 });
   }
 
   render() {
@@ -44,4 +45,4 @@ class OptionsQuantitySelect extends Component {
   }
 }
 
-export default OptionsQuantitySelect;
+export default AddNewItem;

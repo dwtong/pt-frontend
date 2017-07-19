@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import OptionsQuantitySelect from '../components/OptionsQuantitySelect';
-import OrderItems from '../components/OrderItems'
-import OrderDetails from '../components/OrderDetails'
-import OrderPaperAllocations from '../components/OrderPaperAllocations'
+import AddNewItem from '../components/AddNewItem';
+import OrderItem from '../components/OrderItem';
+import OrderItems from '../components/OrderItems';
+import OrderDetails from '../components/OrderDetails';
+import OrderPaper from '../components/OrderPaper';
+import OrderPaperItem from '../components/OrderPaperItem';
+import OrderPaperSummary from '../components/OrderPaperSummary';
 
 import { CUSTOMERS, NOTEBOOKS, PAPER_SOURCES } from '../config/mock-data';
-import { borderStyle } from '../styles';
-
 
 class OrderForm extends Component {
   constructor(props) {
@@ -49,43 +50,47 @@ class OrderForm extends Component {
   }
 
   calculatePaperRequired() {
-    return ([
-      {paperType: 'A4 Blank on one side', allocated: 25, required: 30},
-      {paperType: 'A4 Semi-blank', allocated: 5, required: 20},
-    ]);
+    // return ([
+    //   {paperType: 'A4 Blank on one side', allocated: 25, required: 30},
+    //   {paperType: 'A4 Semi-blank', allocated: 5, required: 20},
+    // ]);
   }
 
-  findNotebookName(id) {
-    return this.state.notebookTypes.find(nb => nb.id === id).name;
+  findBook(id) {
+    return this.state.notebookTypes.find(nb => nb.id === id);
   }
 
   render () {
-    const notebooks = this.state.notebookTypes.map(nb => {return { name: nb.name, id: nb.id } });
-    const orderItems = this.state.order.orderItems.map(item =>
-      <p><strong>{this.findNotebookName(item.bookId)}</strong> Quantity: {item.quantity}</p>)
+    const { notebookTypes, order, paperSources } = this.state;
+    const notebooks = notebookTypes.map(nb => {return { name: nb.name, id: nb.id } });
+    const paperOptions = paperSources.map(ps => {return {name: ps.supplierName, id: ps.supplierID}});
+    const paperRequired = this.calculatePaperRequired();
 
     return (
       <div>
-        <div style={borderStyle}>
-          <OrderDetails customers={this.state.customers} />
-        </div>
+        <OrderDetails customers={this.state.customers} />
 
-        <div style={borderStyle}>
-          <OrderItems>
-            {orderItems}
-            <OptionsQuantitySelect
-              label="Notebook Type"
-              options={notebooks}
-              addItem={this.addOrderItem} />
-          </OrderItems>
-        </div>
+        <OrderItems>
+          {order.orderItems && order.orderItems.map(item =>
+            <OrderItem item={this.findBook(item.bookId)} quantity={item.quantity} />)}
 
-        <div style={borderStyle}>
-          <OrderPaperAllocations
-            paperRequired={this.calculatePaperRequired()}
-            paperSources={this.state.paperSources} />
-          <button>Confirm Order!</button>
-        </div>
+          <AddNewItem
+            label="Notebook Type" options={notebooks} addItem={this.addOrderItem} />
+        </OrderItems>
+
+        <OrderPaper>
+          {paperRequired && paperRequired.map(paperType =>
+            <div>
+              <OrderPaperItem>
+                <AddNewItem
+                  label="Paper Source" options={paperOptions} addItem={this.addPaperSource} />
+              </OrderPaperItem>
+              <OrderPaperSummary required={paperType.required} allocated={paperType.allocated} />
+            </div>
+          )}
+        </OrderPaper>
+
+        <button>Confirm Order!</button>
       </div>
     );
   }
