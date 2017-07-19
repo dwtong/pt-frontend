@@ -24,22 +24,28 @@ class OrderForm extends Component {
     }
 
     this.addOrderItem = this.addOrderItem.bind(this);
+    this.addPaperSource = this.addPaperSource.bind(this);
     this.calcuatePaperRequired = this.calculatePaperRequired.bind(this);
   }
 
   addOrderItem(item) {
     const id = parseInt(item.item, 10);
-    const newItem = { bookId: id, quantity: item.quantity };
-    const oldItem = this.state.order.orderItems.find(item => item.bookId === id);
-    let items;
-    if (oldItem) {
-      const quantity = parseInt(oldItem.quantity, 10) + parseInt(newItem.quantity, 10);
-      const mergedItem = { bookId: id, quantity: quantity }
-      items = [...this.state.order.orderItems.filter(item => item.bookId !== id), mergedItem];
+    let items = [...this.state.order.orderItems];
+    const itemIndex = items.findIndex(i => i.bookId === id);
+
+    if (itemIndex >= 0) {
+      // Update existing quantity of line item
+      items[itemIndex].quantity = parseInt(items[itemIndex].quantity, 10) + parseInt(item.quantity, 10);
     } else {
-      items = [...this.state.order.orderItems, newItem];
+      // Add new line item
+      items.push({ bookId: id, quantity: item.quantity });
     }
+
     this.setState({ order: { orderItems: items } });
+  }
+
+  addPaperSource(source) {
+
   }
 
   calculatePaperRequired() {
