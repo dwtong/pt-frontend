@@ -7,7 +7,7 @@ const OrderDetails = ({ customers, dueDate }) =>
     <div>
       <label>Customer </label>
       <select>
-        {customers && customers.map(customer => <option key={customer} value={customer}>{customer}</option>)}
+        {customers && customers.map(customer => <option key={customer.id} value={customer.id}>{customer.name}</option>)}
       </select>
     </div>
     <div>

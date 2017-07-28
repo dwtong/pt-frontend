@@ -1,45 +1,76 @@
-export const CUSTOMERS = ['Metservice', 'Flick', 'Strategy'];
-export const PAPER_TYPES = [
+export const CUSTOMERS = [
   {
-    id: 0,
-    type: 'Blank On One Side A4'
-  },
+    id: 300,
+    name: 'Metservice'
+  }, {
+    id: 301,
+    name: 'Flick'
+  }, {
+    id: 302,
+    name: 'Strategy'
+  }
+];
+
+export const BOOKS = [
   {
-    id: 1,
-    type: 'Semi Blank A4',
-  }];
-export const NOTEBOOKS = [
-  {
-    id: 0,
+    id: 200,
     name: 'A5 Stapled',
-    paper: [
-      {paperTypeId: 0, quantity: 5},
-      {paperTypeId: 1, quantity: 8}
+    pages: [
+      {paperId: 100, quantity: 5},
+      {paperId: 101, quantity: 8}
     ]
   }, {
-    id: 1,
+    id: 201,
     name: 'A5 Wire Bound',
-    paper: [
-      {paperTypeId: 0, quantity: 10},
-      {paperTypeId: 1, quantity: 5}
+    pages: [
+      {paperId: 100, quantity: 10},
+      {paperId: 101, quantity: 5}
     ]
   },
 ];
-export const PAPER_SOURCES = [
+
+export const PAPERS = [
   {
-    id: 0,
-    name: 'Metservice',
-    paper: [
-      {paperTypeId: 0, quantity: 500},
-      {paperTypeId: 1, quantity: 1000}
+    id: 100,
+    name: 'Semi Blank A4',
+    sources: [
+      {name: 'Flick', id: 1000, quantity: 500},
+      {name: 'Metservice', id: 1001, quantity: 1000}
     ],
   },
-    {
-    id: 1,
-    name: 'Flick',
-    paper: [
-      {paperTypeId: 0, quantity: 250},
-      {paperTypeId: 1, quantity: 750}
+  {
+    id: 101,
+    name: 'Blank On One Side A4',
+    sources: [
+      {name: 'Flick', id: 1010, quantity: 500},
+      {name: 'Metservice', id: 1011, quantity: 1000}
     ],
   },
 ];
+
+const exampleState = {
+  // 'data' is curated from GET calls on form load
+  data: {
+    customers: CUSTOMERS,
+    books: BOOKS,
+    papers: PAPERS,
+  },
+
+  // 'order' contains details to be POSTed on order submission
+  order: {
+    customer: 'Customer Name',
+    dueDate: '2017-02-22',
+    items: [
+      {bookId: 200, quantity: 100},
+      {bookId: 201, quantity: 50},
+    ],
+    papers: [
+      {
+        paperId: 100, sources: [
+          {sourceId: 1001, quantity: 300},
+          {sourceId: 1000, quantity: 200},
+        ]
+      }
+    ]
+  },
+}

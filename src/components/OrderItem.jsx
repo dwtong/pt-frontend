@@ -5,4 +5,4 @@ const OrderItem = ({ item, quantity }) =>
     <strong>{item.name}</strong> Quantity: {quantity}
   </p>
 
-export default OrderItem
+export default OrderItem;
