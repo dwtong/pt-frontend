@@ -1,5 +1,6 @@
 import React from 'react';
 import { borderStyle } from '../styles';
+import DatePicker from './DatePicker';
 
 const OrderDetails = ({ customers, dueDate }) =>
   <div style={borderStyle}>
@@ -10,10 +11,7 @@ const OrderDetails = ({ customers, dueDate }) =>
         {customers && customers.map(customer => <option key={customer.id} value={customer.id}>{customer.name}</option>)}
       </select>
     </div>
-    <div>
-      <label>Due Date </label>
-      <input type="date" value="2017-07-22" />
-    </div>
+      <DatePicker label='Due Date' value={dueDate}/>
   </div>
 
 export default OrderDetails;
