@@ -1,21 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
-const DatePicker = ({label, value}) => (
+const DatePicker = ({label, value, onChange}) => (
   <div>
     <label>Due Date </label>
-    <input type="date" value={value} />
+    <input type="date" value={value} onChange={onChange} />
   </div>
 );
 
 DatePicker.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string
-};
-
-DatePicker.defaultProps = {
-  value: moment().format('YYYY-MM-DD')
 };
 
 export default DatePicker;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import AddNewItem from './AddNewItem';
 import OrderItem from './OrderItem';
 import OrderItems from './OrderItems';
@@ -24,15 +23,17 @@ class OrderForm extends Component {
 
       // 'order' contains details to be POSTed on order submission
       order: {
-        customer: '',
-        dueDate: '',
+        customer: null,
+        dueDate: null,
         items: [],
-        papers: []
+        papers: [],
       },
     }
 
+    this.onCustomerChange = this.onCustomerChange.bind(this);
+    this.onDueDateChange = this.onDueDateChange.bind(this);
     this.addOrderItem = this.addOrderItem.bind(this);
-    this.addOrUpdateItem = this.addOrUpdateItem.bind(this);
+    // this.addOrUpdateItem = this.addOrUpdateItem.bind(this);
     this.addPaperSource = this.addPaperSource.bind(this);
     // this.calculatePaperQuantity = this.calculatePaperQuantity.bind(this);
   }
@@ -45,6 +46,14 @@ class OrderForm extends Component {
   componentDidUpdate() {
     console.log('====== STATE ======');
     console.log(this.state);
+  }
+
+  onCustomerChange(event) {
+    this.setState({ order: { ...this.state.order, customer: event.target.value } });
+  }
+
+  onDueDateChange(event) {
+    this.setState({ order: { ...this.state.order, dueDate: event.target.value } });
   }
 
   addOrderItem(item) {
@@ -103,7 +112,13 @@ class OrderForm extends Component {
 
     return (
       <div>
-        <OrderDetails customers={data.customers} />
+        <OrderDetails
+          customer={order.customer}
+          customers={data.customers}
+          dueDate={order.dueDate}
+          onDateChange={this.onDueDateChange}
+          onCustomerChange={this.onCustomerChange}
+        />
 
         <OrderItems>
           {order.items && order.items.map(item =>
