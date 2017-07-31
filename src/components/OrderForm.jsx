@@ -45,18 +45,32 @@ class OrderForm extends Component {
   }
 
   onNewItem(item) {
+    const { data, order } = this.state;
     const bookId = parseInt(item.selection, 10);
     const quantity = parseInt(item.quantity, 10);
-    const items = [...this.state.order.items];
+    const items = [...order.items];
     const index = items.findIndex(i => i.bookId === bookId);
 
     if (index >= 0) {
       items[index].quantity += quantity;
+      this.setState({order: { ...this.state.order, items } });
+
     } else {
-      items.push({bookId: bookId, quantity: quantity});
-      // add to order.papers if required
+      items.push({bookId, quantity});
+      const book = data.books.find((nb) => nb.id === bookId);
+      const papers = [...order.papers];
+
+      book.pages.forEach((page, index) => {
+        if (!order.papers.find((p) => p.paperId === page.paperId)) {
+          papers.push({paperId: page.paperId, sources: []});
+          console.log(papers);
+        }
+
+        if (index >= book.pages.length - 1) {
+          this.setState({order: { ...this.state.order, items, papers } });
+        }
+      });
     }
-    this.setState({order: { ...this.state.order, items: items } });
   }
 
   addPaperSource(source, paper) {
@@ -72,25 +86,6 @@ class OrderForm extends Component {
     // update order.sources with {id: source.option, quantity: source.quantity}
     const index = papers.findIndex(p => p.id === paper.id);
     sources[index] = { ...sources[index],  };
-  }
-
-  // calculatePaperQuantities() {
-  //   const book = this.findBook(item.bookId);
-  //   let requiredPaper = [];
-  //
-  //   book.pages.forEach((page, index) => {
-  //     requiredPaper.push({paperId: page.paperId, quantity: page.quantity * item.quantity});
-  //
-  //     if (index >= book.pages.length - 1) {
-  //       return requiredPaper;
-  //     }
-  //   });
-  // }
-
-  findBook(id) {
-    console.log(`book id: ${id}`);
-    console.log(this.state.data.books);
-    return this.state.data.books.find(nb => nb.id === id);
   }
 
   render () {
