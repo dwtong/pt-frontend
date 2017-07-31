@@ -79,11 +79,6 @@ export default {
           ]
         }
       ]
-    },
-    "order": {
-      "customer": "",
-      "items": [],
-      "papers": []
     }
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AddNewItem from './AddNewItem';
-import OrderItem from './OrderItem';
 import OrderItems from './OrderItems';
 import OrderDetails from './OrderDetails';
 import OrderPaper from './OrderPaper';
@@ -32,20 +31,9 @@ class OrderForm extends Component {
 
     this.onCustomerChange = this.onCustomerChange.bind(this);
     this.onDueDateChange = this.onDueDateChange.bind(this);
-    this.addOrderItem = this.addOrderItem.bind(this);
-    // this.addOrUpdateItem = this.addOrUpdateItem.bind(this);
+    this.onNewItem = this.onNewItem.bind(this);
     this.addPaperSource = this.addPaperSource.bind(this);
     // this.calculatePaperQuantity = this.calculatePaperQuantity.bind(this);
-  }
-  //
-  // componentWillMount() {
-  //   console.log('====== STATE ======');
-  //   console.log(this.state);
-  // }
-  //
-  componentDidUpdate() {
-    console.log('====== STATE ======');
-    console.log(this.state);
   }
 
   onCustomerChange(event) {
@@ -56,7 +44,7 @@ class OrderForm extends Component {
     this.setState({ order: { ...this.state.order, dueDate: event.target.value } });
   }
 
-  addOrderItem(item) {
+  onNewItem(item) {
     const bookId = parseInt(item.selection, 10);
     const quantity = parseInt(item.quantity, 10);
     const items = [...this.state.order.items];
@@ -68,7 +56,7 @@ class OrderForm extends Component {
       items.push({bookId: bookId, quantity: quantity});
       // add to order.papers if required
     }
-    this.setState({order: { items: items } });
+    this.setState({order: { ...this.state.order, items: items } });
   }
 
   addPaperSource(source, paper) {
@@ -107,7 +95,6 @@ class OrderForm extends Component {
 
   render () {
     const { data, order } = this.state;
-    // const notebooks = notebookTypes.map(nb => {return { name: nb.name, id: nb.id } });
     const paperOptions = data.papers.map(paper => {return {name: paper.name, id: paper.id}});
 
     return (
@@ -120,18 +107,11 @@ class OrderForm extends Component {
           onCustomerChange={this.onCustomerChange}
         />
 
-        <OrderItems>
-          {order.items && order.items.map(item =>
-            <OrderItem
-              key={item.bookId}
-              item={this.findBook(item.bookId)}
-              quantity={item.quantity} />)}
-
-          <AddNewItem
-            label="Notebook Type"
-            options={data.books}
-            addItem={this.handleNewItem} />
-        </OrderItems>
+        <OrderItems
+          books={data.books}
+          items={order.items}
+          newItem={this.onNewItem}
+        />
 
         <OrderPaper>
           {order.papers && order.papers.length > 0 ? order.papers.map(paper =>
