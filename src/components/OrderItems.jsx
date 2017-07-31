@@ -3,7 +3,7 @@ import AddNewItem from './AddNewItem';
 import OrderItem from './OrderItem';
 import { borderStyle } from '../styles';
 
-const OrderItems = ({books, items, newItem}) => {
+const OrderItems = ({books, items, addItem}) => {
   return (
     <div style={borderStyle}>
       <h3>Order Items</h3>
@@ -16,7 +16,7 @@ const OrderItems = ({books, items, newItem}) => {
       <AddNewItem
         label="Notebook Type"
         options={books}
-        addItem={newItem} />
+        addItem={addItem} />
     </div>
   );
 };

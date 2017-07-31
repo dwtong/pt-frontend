@@ -64,13 +64,17 @@ const exampleState = {
       {bookId: 200, quantity: 100},
       {bookId: 201, quantity: 50},
     ],
-    papers: [
-      {
-        paperId: 100, sources: [
-          {sourceId: 1001, quantity: 300},
-          {sourceId: 1000, quantity: 200},
-        ]
-      }
+    sources: [
+      {sourceId: 1000, quantity: 200},
+      {sourceId: 1001, quantity: 300},
     ]
   },
+  //   papers: [
+  //     {
+  //       paperId: 100, sources: [
+  //         {sourceId: 1001, quantity: 300},
+  //         {sourceId: 1000, quantity: 200},
+  //       ]
+  //     }
+  //   ]
 }
