@@ -24,7 +24,7 @@ class OrderForm extends Component {
         customer: null,
         dueDate: null,
         items: [],
-        sources: [],
+        papers: [],
       },
     }
 
@@ -54,16 +54,23 @@ class OrderForm extends Component {
     this.setState({order: { ...order, items } });
   }
 
-  addPaperSource(source) {
+  addPaperSource(source, paperId) {
     const { order } = this.state;
+    const paper = order.papers.find(p => p.paperId === paperId) || { paperId: paperId, sources: [] };
+
     const sources = addOrUpdateQuantity({
-      array: order.sources,
+      array: paper.sources,
       identifierName: 'sourceId',
       identifier: source.selection,
       quantity: source.quantity
     });
 
-    this.setState({order: { ...order, sources }})
+    const papers = [
+      ...order.papers.filter(p => p.paperId !== paperId),
+      { paperId: paperId, sources: sources }
+    ];
+
+    this.setState({order: { ...order, papers }});
   }
 
   render () {

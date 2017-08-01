@@ -1,9 +1,8 @@
 import React from 'react';
-import { borderStyle } from '../styles';
 
 const OrderPaperItem = ({ children, label }) => {
   return (
-    <div style={borderStyle}>
+    <div>
       <h5>{label}</h5>
       {children}
     </div>

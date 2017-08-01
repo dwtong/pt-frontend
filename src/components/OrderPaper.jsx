@@ -21,24 +21,27 @@ const OrderPaper = ({ books, order, paperTypes, addPaperSource }) => {
     }
   };
 
-  const calcPaperAllocated = () => {
-    return 50;
+  const calcPaperAllocated = (paperType) => {
+    // Find paper type
+    // Reduce quantities of sources
   };
+
+  const paperTypesForOrder = paperTypes.filter(pt => calcPaperRequired(pt) > 0);
 
   return (
     <div style={borderStyle}>
       <h3>Paper Allocation</h3>
 
-      {paperTypes && paperTypes.length > 0 ? paperTypes.map(pt =>
-        <div>
+      {paperTypesForOrder.length > 0 ? paperTypesForOrder.map(pt =>
+        <div style={borderStyle}>
           <OrderPaperItem
             key={pt.id}
             label={pt.name}>
 
             <AddNewItem
               label="Paper Source"
-              options={paperTypes.map(p => {return {name: p.name, id: p.id}})}
-              addItem={addPaperSource}
+              options={pt.sources.map(p => {return {name: `${p.name} (${p.quantity})`, id: p.id}})}
+              addItem={(source) => addPaperSource(source, pt.id)}
             />
           </OrderPaperItem>
 
@@ -47,8 +50,8 @@ const OrderPaper = ({ books, order, paperTypes, addPaperSource }) => {
             allocated={calcPaperAllocated(pt)}
           />
 
-        </div>
-      ) : 'Please add items to order.'}
+        </div>)
+        : 'Please add items to order.'}
     </div>
   );
 };

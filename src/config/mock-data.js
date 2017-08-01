@@ -42,8 +42,8 @@ export const PAPERS = [
     id: 101,
     name: 'Blank On One Side A4',
     sources: [
-      {name: 'Flick', id: 1010, quantity: 500},
-      {name: 'Metservice', id: 1011, quantity: 1000}
+      {name: 'Flick', id: 1010, quantity: 200},
+      {name: 'Metservice', id: 1011, quantity: 300}
     ],
   },
 ];
@@ -64,17 +64,13 @@ const exampleState = {
       {bookId: 200, quantity: 100},
       {bookId: 201, quantity: 50},
     ],
-    sources: [
-      {sourceId: 1000, quantity: 200},
-      {sourceId: 1001, quantity: 300},
+    papers: [
+      {
+        paperId: 100, sources: [
+          {sourceId: 1001, quantity: 300},
+          {sourceId: 1000, quantity: 200},
+        ]
+      }
     ]
   },
-  //   papers: [
-  //     {
-  //       paperId: 100, sources: [
-  //         {sourceId: 1001, quantity: 300},
-  //         {sourceId: 1000, quantity: 200},
-  //       ]
-  //     }
-  //   ]
 }
