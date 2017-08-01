@@ -30,6 +30,7 @@ class OrderForm extends Component {
 
     this.onCustomerChange = this.onCustomerChange.bind(this);
     this.onDueDateChange = this.onDueDateChange.bind(this);
+    this.onOrderSubmission = this.onOrderSubmission.bind(this);
     this.addOrderItem = this.addOrderItem.bind(this);
     this.addPaperSource = this.addPaperSource.bind(this);
   }
@@ -40,6 +41,10 @@ class OrderForm extends Component {
 
   onDueDateChange(event) {
     this.setState({ order: { ...this.state.order, dueDate: event.target.value } });
+  }
+
+  onOrderSubmission(event) {
+    console.log(this.state.order);
   }
 
   addOrderItem(item) {
@@ -56,7 +61,8 @@ class OrderForm extends Component {
 
   addPaperSource(source, paperId) {
     const { order } = this.state;
-    const paper = order.papers.find(p => p.paperId === paperId) || { paperId: paperId, sources: [] };
+    const paper = order.papers.find(p => p.paperId === paperId)
+      || { paperId: paperId, sources: [] };
 
     const sources = addOrUpdateQuantity({
       array: paper.sources,
@@ -99,7 +105,7 @@ class OrderForm extends Component {
           addPaperSource={this.addPaperSource}
         />
 
-        <button>Confirm Order!</button>
+        <button onClick={this.onOrderSubmission}>Confirm Order!</button>
       </div>
     );
   }

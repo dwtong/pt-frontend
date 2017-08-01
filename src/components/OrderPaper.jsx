@@ -22,8 +22,16 @@ const OrderPaper = ({ books, order, paperTypes, addPaperSource }) => {
   };
 
   const calcPaperAllocated = (paperType) => {
-    // Find paper type
-    // Reduce quantities of sources
+    const paper = order.papers.find(p => p.paperId === paperType.id);
+
+    if (paper && paper.sources && paper.sources.length > 0) {
+      return paper.sources.reduce((sum, source) => {
+        return sum + source.quantity;
+      }, 0);
+
+    } else {
+      return 0;
+    }
   };
 
   const paperTypesForOrder = paperTypes.filter(pt => calcPaperRequired(pt) > 0);
