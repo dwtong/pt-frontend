@@ -84,6 +84,7 @@ class OrderForm extends Component {
 
     return (
       <div>
+        <h2>New Order</h2>
         <OrderDetails
           customer={order.customer}
           customers={data.customers}

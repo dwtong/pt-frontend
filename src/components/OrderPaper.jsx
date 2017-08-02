@@ -2,7 +2,6 @@ import React from 'react';
 import OrderPaperItem from './OrderPaperItem';
 import OrderPaperSummary from './OrderPaperSummary';
 import AddNewItem from './AddNewItem';
-import { borderStyle } from '../styles';
 
 const OrderPaper = ({ books, order, paperTypes, addPaperSource }) => {
   const calcPaperRequired = (paperType) => {
@@ -37,11 +36,11 @@ const OrderPaper = ({ books, order, paperTypes, addPaperSource }) => {
   const paperTypesForOrder = paperTypes.filter(pt => calcPaperRequired(pt) > 0);
 
   return (
-    <div style={borderStyle}>
+    <div>
       <h3>Paper Allocation</h3>
 
       {paperTypesForOrder.length > 0 ? paperTypesForOrder.map(pt =>
-        <div style={borderStyle}>
+        <div>
           <OrderPaperItem
             key={pt.id}
             label={pt.name}>

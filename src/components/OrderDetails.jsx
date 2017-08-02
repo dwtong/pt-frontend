@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { borderStyle } from '../styles';
 import DatePicker from './DatePicker';
 import OptionPicker from './OptionPicker';
 
 const OrderDetails = ({ customer, customers, dueDate, onCustomerChange, onDateChange }) => (
-  <div style={borderStyle}>
+  <div>
     <h3>Order Details</h3>
 
       <OptionPicker

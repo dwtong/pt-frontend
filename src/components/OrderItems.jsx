@@ -1,11 +1,10 @@
 import React from 'react';
 import AddNewItem from './AddNewItem';
 import OrderItem from './OrderItem';
-import { borderStyle } from '../styles';
 
 const OrderItems = ({books, items, addItem}) => {
   return (
-    <div style={borderStyle}>
+    <div>
       <h3>Order Items</h3>
       {items && items.map(item =>
         <OrderItem

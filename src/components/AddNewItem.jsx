@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
 
 class AddNewItem extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class AddNewItem extends Component {
           </select>
           <label> Quantity </label>
           <input name="quantity" type="number" value={quantity} onChange={this.handleInputChange} />
-          <button>Add</button>
+          <Button outline color="success">Add Item</Button>
         </form>
       </div>
     );
