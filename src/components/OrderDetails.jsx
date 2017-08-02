@@ -5,8 +5,6 @@ import OptionPicker from './OptionPicker';
 
 const OrderDetails = ({ customer, customers, dueDate, onCustomerChange, onDateChange }) => (
   <div>
-    <h3>Order Details</h3>
-
       <OptionPicker
         label="Customer"
         options={customers}

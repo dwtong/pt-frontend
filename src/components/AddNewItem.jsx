@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 
 class AddNewItem extends Component {
   constructor(props) {
@@ -12,6 +12,10 @@ class AddNewItem extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleQuantityFocus(event) {
+    event.target.select();
   }
 
   handleInputChange(event) {
@@ -34,18 +38,33 @@ class AddNewItem extends Component {
     const { label, options } = this.props;
     const { selectedOption, quantity } = this.state;
 
+    const styles = {
+      formGroup: {
+        paddingRight: '1rem'
+      },
+      label: {
+        paddingRight: '0.5rem'
+      }
+    };
+
     return(
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>{label}</label>
-          <select name="selectedOption" value={selectedOption} onChange={this.handleInputChange}>
-            <option default>Select an option...</option>
-            {options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
-          </select>
-          <label> Quantity </label>
-          <input name="quantity" type="number" value={quantity} onChange={this.handleInputChange} />
-          <Button outline color="success">Add Item</Button>
-        </form>
+        <Form inline onSubmit={this.handleSubmit}>
+          <FormGroup style={styles.formGroup} >
+            <Input type="select" name="selectedOption" value={selectedOption} onChange={this.handleInputChange}>
+              <option default>Choose {label}...</option>
+              {options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
+            </Input>
+          </FormGroup>
+
+          <FormGroup style={styles.formGroup} >
+            <Label style={styles.label}>Quantity</Label>
+            <Input name="quantity" type="number" value={quantity} onFocus={this.handleQuantityFocus} onChange={this.handleInputChange} />
+          </FormGroup>
+          <FormGroup style={styles.formGroup} >
+            <Button outline color="success">Add Item</Button>
+          </FormGroup>
+        </Form>
       </div>
     );
   }

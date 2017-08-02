@@ -4,6 +4,7 @@ import addOrUpdateQuantity from './add-or-update-quantity';
 import OrderItems from './OrderItems';
 import OrderDetails from './OrderDetails';
 import OrderPaper from './OrderPaper';
+import Section from './Section';
 
 import { CUSTOMERS, BOOKS, PAPERS } from '../config/mock-data';
 
@@ -85,28 +86,32 @@ class OrderForm extends Component {
     return (
       <div>
         <h2>New Order</h2>
-        <OrderDetails
-          customer={order.customer}
-          customers={data.customers}
-          dueDate={order.dueDate}
-          onDateChange={this.onDueDateChange}
-          onCustomerChange={this.onCustomerChange}
-        />
+        <Section title="Order Details">
+          <OrderDetails
+            customer={order.customer}
+            customers={data.customers}
+            dueDate={order.dueDate}
+            onDateChange={this.onDueDateChange}
+            onCustomerChange={this.onCustomerChange}
+          />
+        </Section>
 
-        <OrderItems
-          books={data.books}
-          items={order.items}
-          addItem={this.addOrderItem}
-        />
+        <Section title="Order Items">
+          <OrderItems
+            books={data.books}
+            items={order.items}
+            addItem={this.addOrderItem}
+          />
+        </Section>
 
-        <OrderPaper
-          books={data.books}
-          order={order}
-          paperTypes={data.papers}
-          addPaperSource={this.addPaperSource}
-        />
-
-        <button onClick={this.onOrderSubmission}>Confirm Order!</button>
+        <Section title="Paper Sources">
+          <OrderPaper
+            books={data.books}
+            order={order}
+            paperTypes={data.papers}
+            addPaperSource={this.addPaperSource}
+          />
+        </Section>
       </div>
     );
   }

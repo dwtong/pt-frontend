@@ -37,8 +37,6 @@ const OrderPaper = ({ books, order, paperTypes, addPaperSource }) => {
 
   return (
     <div>
-      <h3>Paper Allocation</h3>
-
       {paperTypesForOrder.length > 0 ? paperTypesForOrder.map(pt =>
         <div>
           <OrderPaperItem

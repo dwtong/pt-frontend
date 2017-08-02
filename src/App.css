@@ -1,27 +1,12 @@
 body {
+  background-color: rgba(242, 101, 34, 0.05);
   line-height: 1.7rem;
-}
-
-button {
-  margin: 1rem;
-}
-
-input {
-  margin: 0.5rem;
+  padding-bottom: 5rem;
 }
 
 h2 {
-  margin-bottom: 1rem;
-}
-
-h3 {
-  margin-top: 1rem;
-  text-transform: uppercase;
-  font-size: 1rem;
-  color: darkgray;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 400;
+  margin-bottom: 2rem;
+  color: #494e50;
 }
 
 .App {

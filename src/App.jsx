@@ -8,10 +8,14 @@ class App extends Component {
   render() {
     const styles = {
       container: {
-        marginTop: '1rem'
+        marginTop: '1rem',
+        marginLeft: '1.5rem',
       },
       content: {
-        paddingLeft: '5rem'
+        paddingLeft: '2rem'
+      },
+      navigation: {
+        width: '15%'
       },
       row: {
         paddingTop: '1rem'
@@ -22,7 +26,7 @@ class App extends Component {
       <div>
         <Container style={styles.container}>
           <Row style={styles.row}>
-            <Col xs="3">
+            <Col style={styles.navigation} xs="3">
               <Navigation />
             </Col>
             <Col style={styles.content} xs="9">
