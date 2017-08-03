@@ -1,76 +1,82 @@
-export const CUSTOMERS = [
+export const CUSTOMERS = ['Metservice', 'Flick', 'Yoobee'];
+
+export const INVENTORY = [
   {
-    id: 300,
-    name: 'Metservice'
-  }, {
-    id: 301,
-    name: 'Flick'
-  }, {
-    id: 302,
-    name: 'Strategy'
+    id: 10,
+    type: 'Blank on one side',
+    sizes: [
+      {
+        name: 'A5',
+        sources: [
+          {id: 100, name: 'metservice', quantity: 55},
+          {id: 101, name: 'flick', quantity: 90},
+        ]
+      }, {
+        name: 'A4',
+        sources: [
+          {id: 200, name: 'metservice', quantity: 55},
+          {id: 201, name: 'flick', quantity: 90},
+        ]
+      }
+    ]
+  },
+  {
+    id: 11,
+    type: 'Semi blank',
+    sizes: [
+      {
+        name: 'A5',
+        sources: [
+          {id: 100, name: 'metservice', quantity: 55},
+          {id: 101, name: 'flick', quantity: 90},
+        ]
+      }, {
+        name: 'A4',
+        sources: [
+          {id: 200, name: 'metservice', quantity: 55},
+          {id: 201, name: 'flick', quantity: 90},
+        ]
+      }
+    ]
   }
 ];
 
-export const BOOKS = [
-  {
-    id: 200,
-    name: 'A5 Stapled',
-    pages: [
-      {paperId: 100, quantity: 5},
-      {paperId: 101, quantity: 8}
-    ]
-  }, {
-    id: 201,
-    name: 'A5 Wire Bound',
-    pages: [
-      {paperId: 100, quantity: 10},
-      {paperId: 101, quantity: 5}
-    ]
-  },
-];
-
-export const PAPERS = [
-  {
-    id: 100,
-    name: 'Semi Blank A4',
-    sources: [
-      {name: 'Flick', id: 1000, quantity: 500},
-      {name: 'Metservice', id: 1001, quantity: 1000}
-    ],
-  },
-  {
-    id: 101,
-    name: 'Blank On One Side A4',
-    sources: [
-      {name: 'Flick', id: 1010, quantity: 200},
-      {name: 'Metservice', id: 1011, quantity: 300}
-    ],
-  },
-];
 
 const exampleState = {
   // 'data' is curated from GET calls on form load
   data: {
     customers: CUSTOMERS,
-    books: BOOKS,
-    papers: PAPERS,
+    inventory: INVENTORY
   },
 
   // 'order' contains details to be POSTed on order submission
   order: {
-    customer: 'Customer Name',
+    customerId: 'metservice',
     dueDate: '2017-02-22',
     items: [
-      {bookId: 200, quantity: 100},
-      {bookId: 201, quantity: 50},
-    ],
-    papers: [
       {
-        paperId: 100, sources: [
-          {sourceId: 1001, quantity: 300},
-          {sourceId: 1000, quantity: 200},
+        binding: 'wire',
+        size: 'a5',
+        quantity: 100,
+        pages: [
+          {
+            paperId: 10,
+            quantity: 5,
+            sources: [
+              {id: 100, quantity: 55},
+              {id: 101, quantity: 20}
+            ]
+          },
+          {
+            paperId: 11,
+            quantity: 8,
+            sources: [
+              {sourceId: 200, quantity: 55},
+              {sourceId: 201, quantity: 20}
+            ]
+          },
         ]
-      }
+      },
     ]
   },
 }
