@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import AddNewItem from './AddNewItem';
-import addOrUpdateQuantity from './add-or-update-quantity';
-import OrderItems from './OrderItems';
 import OrderDetails from './OrderDetails';
-import OrderPaper from './OrderPaper';
-import Section from './Section';
-
-import { CUSTOMERS, BOOKS, PAPERS } from '../config/mock-data';
+import { CUSTOMERS } from '../config/mock-data';
 
 class OrderForm extends Component {
   constructor(props) {
@@ -16,68 +10,34 @@ class OrderForm extends Component {
       // 'data' is curated from GET calls on form load
       data: {
         customers: CUSTOMERS,
-        books: BOOKS,
-        papers: PAPERS,
       },
 
       // 'order' contains details to be POSTed on order submission
       order: {
-        customer: null,
+        orderId: null,
+        customerId: null,
         dueDate: null,
-        items: [],
-        papers: [],
       },
     }
 
-    this.onCustomerChange = this.onCustomerChange.bind(this);
-    this.onDueDateChange = this.onDueDateChange.bind(this);
-    this.onOrderSubmission = this.onOrderSubmission.bind(this);
-    this.addOrderItem = this.addOrderItem.bind(this);
-    this.addPaperSource = this.addPaperSource.bind(this);
+    this.updateOrder = this.updateOrder.bind(this);
   }
 
-  onCustomerChange(event) {
-    this.setState({ order: { ...this.state.order, customer: event.target.value } });
+  componentDidMount() {
+    console.log('GET customers');
+    console.log('POST new order');
+    this.setState({order: {...this.state.order, orderId: 0 } });
   }
 
-  onDueDateChange(event) {
-    this.setState({ order: { ...this.state.order, dueDate: event.target.value } });
-  }
+  updateOrder(name, value) {
+    this.setState({ order: { ...this.state.order, [name]: value } }, () => {
+      const { orderId, ...orderBody } = this.state.order;
 
-  onOrderSubmission(event) {
-    console.log(this.state.order);
-  }
-
-  addOrderItem(item) {
-    const { order } = this.state;
-    const items = addOrUpdateQuantity({
-      array: order.items,
-      identifierName: 'bookId',
-      identifier: item.selection,
-      quantity: item.quantity
+      if (orderId >= 0) {
+        console.log(`PUT /orders/${orderId}`);
+        console.log(orderBody);
+      }
     });
-
-    this.setState({order: { ...order, items } });
-  }
-
-  addPaperSource(source, paperId) {
-    const { order } = this.state;
-    const paper = order.papers.find(p => p.paperId === paperId)
-      || { paperId: paperId, sources: [] };
-
-    const sources = addOrUpdateQuantity({
-      array: paper.sources,
-      identifierName: 'sourceId',
-      identifier: source.selection,
-      quantity: source.quantity
-    });
-
-    const papers = [
-      ...order.papers.filter(p => p.paperId !== paperId),
-      { paperId: paperId, sources: sources }
-    ];
-
-    this.setState({order: { ...order, papers }});
   }
 
   render () {
@@ -86,32 +46,13 @@ class OrderForm extends Component {
     return (
       <div>
         <h2>New Order</h2>
-        <Section title="Order Details">
           <OrderDetails
             customer={order.customer}
             customers={data.customers}
             dueDate={order.dueDate}
-            onDateChange={this.onDueDateChange}
-            onCustomerChange={this.onCustomerChange}
+            onDateChange={(e) => this.updateOrder('dueDate', e.target.value)}
+            onCustomerChange={(e) => this.updateOrder('customerId', e.target.value)}
           />
-        </Section>
-
-        <Section title="Order Items">
-          <OrderItems
-            books={data.books}
-            items={order.items}
-            addItem={this.addOrderItem}
-          />
-        </Section>
-
-        <Section title="Paper Sources">
-          <OrderPaper
-            books={data.books}
-            order={order}
-            paperTypes={data.papers}
-            addPaperSource={this.addPaperSource}
-          />
-        </Section>
       </div>
     );
   }

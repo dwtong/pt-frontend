@@ -10,9 +10,7 @@ class App extends Component {
       container: {
         marginTop: '1rem',
         marginLeft: '1.5rem',
-      },
-      content: {
-        paddingLeft: '2rem'
+        width: '93%'
       },
       navigation: {
         width: '15%'

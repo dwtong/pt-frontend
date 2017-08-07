@@ -2,18 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from './DatePicker';
 import OptionPicker from './OptionPicker';
+import { Col, Row } from 'reactstrap';
+import Section from './Section';
 
 const OrderDetails = ({ customer, customers, dueDate, onCustomerChange, onDateChange }) => (
-  <div>
-      <OptionPicker
-        label="Customer"
-        options={customers}
-        value={customer}
-        onChange={onCustomerChange}
-      />
+  <Section title="Order Details">
+    <Row>
+      <Col>
+        <OptionPicker
+          label="Customer"
+          options={customers}
+          value={customer}
+          onChange={onCustomerChange}
+        />
+      </Col>
 
-      <DatePicker label='Due Date' onChange={onDateChange} value={dueDate} />
-  </div>
+      <Col>
+        <DatePicker label='Due Date' onChange={onDateChange} value={dueDate} />
+      </Col>
+    </Row>
+  </Section>
 );
 
 OrderDetails.propTypes = {
