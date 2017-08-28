@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from './DatePicker';
-import OptionPicker from './OptionPicker';
+import DatePicker from 'components/DatePicker';
+import OptionPicker from 'components/OptionPicker';
 import { Col, Row } from 'reactstrap';
-import Section from './Section';
+import Section from 'components/Section';
 
 const OrderDetails = ({ customer, customers, dueDate, onCustomerChange, onDateChange }) => (
   <Section title="Order Details">
@@ -26,8 +26,10 @@ const OrderDetails = ({ customer, customers, dueDate, onCustomerChange, onDateCh
 
 OrderDetails.propTypes = {
   customer: PropTypes.string,
-  customers: PropTypes.object,
+  customers: PropTypes.array,
   dueDate: PropTypes.string,
+  onCustomerChange: PropTypes.func,
+  onDateChange: PropTypes.func
 };
 
 export default OrderDetails;

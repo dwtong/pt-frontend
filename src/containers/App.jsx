@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Col, Row } from 'reactstrap';
 import './App.css';
-import Navigation from './components/Navigation';
-import OrderForm from './components/OrderForm';
+import Navigation from 'components/Navigation';
+import OrderPage from 'containers/OrderPage';
 
 class App extends Component {
   render() {
@@ -28,7 +28,7 @@ class App extends Component {
               <Navigation />
             </Col>
             <Col style={styles.content} xs="9">
-              <OrderForm />
+              <OrderPage />
             </Col>
           </Row>
         </Container>

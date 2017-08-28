@@ -1,41 +1,40 @@
 import React, { Component } from 'react';
-import OrderDetails from './OrderDetails';
-import { CUSTOMERS } from '../config/mock-data';
+import OrderDetails from 'components/OrderDetails';
+import OrderItemsContainer from 'containers/OrderItemsContainer';
+import { CUSTOMERS } from 'config/mock-data';
 
-class OrderForm extends Component {
+class OrderPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // 'data' is curated from GET calls on form load
       data: {
         customers: CUSTOMERS,
       },
 
-      // 'order' contains details to be POSTed on order submission
       order: {
-        orderId: null,
+        id: null,
         customerId: null,
         dueDate: null,
-      },
+      }
     }
 
-    this.updateOrder = this.updateOrder.bind(this);
+    this.addOrderDetail = this.addOrderDetail.bind(this);
   }
 
   componentDidMount() {
     console.log('GET customers');
     console.log('POST new order');
-    this.setState({order: {...this.state.order, orderId: 0 } });
+    // Set state on callback from new order POST
+    this.setState({order: {...this.state.order, id: 0 } });
   }
 
-  updateOrder(name, value) {
+  addOrderDetail(name, value) {
     this.setState({ order: { ...this.state.order, [name]: value } }, () => {
       const { orderId, ...orderBody } = this.state.order;
 
       if (orderId >= 0) {
         console.log(`PUT /orders/${orderId}`);
-        console.log(orderBody);
       }
     });
   }
@@ -50,12 +49,14 @@ class OrderForm extends Component {
             customer={order.customer}
             customers={data.customers}
             dueDate={order.dueDate}
-            onDateChange={(e) => this.updateOrder('dueDate', e.target.value)}
-            onCustomerChange={(e) => this.updateOrder('customerId', e.target.value)}
+            onDateChange={(e) => this.addOrderDetail('dueDate', e.target.value)}
+            onCustomerChange={(e) => this.addOrderDetail('customerId', e.target.value)}
           />
+
+          {order.id >= 0 && <OrderItemsContainer orderId={order.id} />}
       </div>
     );
   }
 };
 
-export default OrderForm;
+export default OrderPage;

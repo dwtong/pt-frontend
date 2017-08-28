@@ -13,8 +13,10 @@ const OptionPicker = ({label, options, value, onChange}) => (
 );
 
 OptionPicker.propTypes = {
-  options: PropTypes.object,
+  label: PropTypes.string,
+  options: PropTypes.array.isRequired,
   value: PropTypes.string,
+  onChange: PropTypes.func
 };
 
 export default OptionPicker;
