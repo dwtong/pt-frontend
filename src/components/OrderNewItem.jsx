@@ -80,10 +80,15 @@ class NewOrderItem extends Component {
     const { bindings, sizes, addItem } = this.props;
     const newItem = { ...item };
 
-    newItem.binding = bindings.find(b => b.id === parseInt(item.binding, 10)).name;
-    newItem.size = sizes.find(b => b.id === parseInt(item.size, 10)).name;
-    addItem(newItem);
-    this.setState(this.baseState);
+    if (item.binding && item.size && item.quantity) {
+      newItem.binding = bindings.find(b => b.id === parseInt(item.binding, 10)).name;
+      newItem.size = sizes.find(b => b.id === parseInt(item.size, 10)).name;
+      addItem(newItem);
+      this.setState(this.baseState);
+
+    } else {
+      // error message
+    }
   }
 };
 

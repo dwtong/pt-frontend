@@ -4,7 +4,7 @@ body {
   padding-bottom: 5rem;
 }
 
-h2 {
+h2, h3 {
   margin-bottom: 2rem;
   color: #494e50;
 }
