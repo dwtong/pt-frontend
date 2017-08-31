@@ -4,7 +4,7 @@ export const CUSTOMERS = [
   {id: 12, name: 'Yoobee'}
 ];
 
-export const BOOK_TEMPLATES = [
+export const ITEM_TEMPLATES = [
   {
     size: 'A5',
     binding: 'Stapled',
@@ -14,9 +14,19 @@ export const BOOK_TEMPLATES = [
     ]
   }, {
     size: 'A5',
-    binding: 'Wire Bound',
+    binding: 'Wire',
     pageRatios: [
       {size: 'A4', type: 'blank_on_one_side', quantity: 30}
     ]
   },
+];
+
+export const ITEM_BINDINGS = [
+  {id: 0, name: 'Wire'},
+  {id: 1, name: 'Stapled'},
+];
+
+export const ITEM_SIZES = [
+  {id: 0, name: 'A4'},
+  {id: 1, name: 'A3'},
 ];
